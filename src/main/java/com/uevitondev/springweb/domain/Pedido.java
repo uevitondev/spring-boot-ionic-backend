@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 public class Pedido implements Serializable {
@@ -41,5 +42,18 @@ public class Pedido implements Serializable {
 
     public void setInstant(Date instant) {
         this.instant = instant;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pedido pedido = (Pedido) o;
+        return Objects.equals(id, pedido.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

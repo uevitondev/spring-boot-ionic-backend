@@ -1,6 +1,7 @@
 package com.uevitondev.springweb.services;
 
 import com.uevitondev.springweb.domain.Categoria;
+import com.uevitondev.springweb.exceptions.ObjectNotFoundException;
 import com.uevitondev.springweb.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,9 +29,9 @@ public class CategoriaService {
     }
 
 
-    public Categoria listarCategoriaById(Integer id) {
+    public Categoria buscarCategoriaById(Integer id) {
         Optional<Categoria> categoria = categoriaRepository.findById(id);
-        return categoria.orElse(null);
+        return categoria.orElseThrow(() -> new ObjectNotFoundException("Categoria não encontrada! Id: " + id + ", Tipo: " + Categoria.class.getName()));
     }
 
 
