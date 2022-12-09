@@ -1,9 +1,6 @@
 package com.uevitondev.springweb.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -20,13 +17,27 @@ public class Pedido implements Serializable {
     private Integer id;
     private Date instant;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
+    private Pagamento pagamento;
+
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "endereco_de_entrega_id")
+    private Endereco endereco;
+
     public Pedido() {
 
     }
 
-    public Pedido(Integer id, Date instant) {
+    public Pedido(Integer id, Date instant, Cliente cliente, Endereco endereco) {
         this.id = id;
         this.instant = instant;
+        this.cliente = cliente;
+        this.endereco = endereco;
     }
 
     public Integer getId() {
@@ -43,6 +54,30 @@ public class Pedido implements Serializable {
 
     public void setInstant(Date instant) {
         this.instant = instant;
+    }
+
+    public Pagamento getPagamento() {
+        return pagamento;
+    }
+
+    public void setPagamento(Pagamento pagamento) {
+        this.pagamento = pagamento;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
     @Override
