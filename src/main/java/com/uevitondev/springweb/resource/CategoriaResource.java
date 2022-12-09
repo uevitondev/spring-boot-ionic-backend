@@ -19,17 +19,16 @@ public class CategoriaResource {
     @Autowired
     private CategoriaService categoriaService;
 
+    @GetMapping
+    public ResponseEntity<List<Categoria>> listarCategorias() {
+        List<Categoria> lista = categoriaService.listarCategorias();
+        return ResponseEntity.ok().body(lista);
+    }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Categoria> listarCategoriaById(@PathVariable Integer id) {
         Categoria categoria = categoriaService.buscarCategoriaById(id);
         return ResponseEntity.ok().body(categoria);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<Categoria>> listarCategorias() {
-        List<Categoria> lista = categoriaService.listarCategorias();
-        return ResponseEntity.ok().body(lista);
     }
 
 

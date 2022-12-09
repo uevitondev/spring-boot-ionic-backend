@@ -11,18 +11,9 @@ import java.util.Optional;
 
 @Service
 public class CategoriaService {
+
     @Autowired
     private CategoriaRepository categoriaRepository;
-
-
-    public void salvarCategoria(Categoria categoria) {
-        categoriaRepository.save(categoria);
-    }
-
-
-    public void salvarCategorias(List<Categoria> listaCategoria) {
-        categoriaRepository.saveAll(listaCategoria);
-    }
 
     public List<Categoria> listarCategorias() {
         return categoriaRepository.findAll();
