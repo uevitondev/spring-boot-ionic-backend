@@ -1,5 +1,6 @@
 package com.uevitondev.springweb.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.uevitondev.springweb.domain.enums.EstadoPagamento;
 import jakarta.persistence.*;
 
@@ -17,6 +18,7 @@ public abstract class Pagamento implements Serializable {
     private Integer id;
     private Integer estadoPagamento;
 
+    @JsonBackReference
     @OneToOne
     @JoinColumn(name = "pedido_id")
     @MapsId

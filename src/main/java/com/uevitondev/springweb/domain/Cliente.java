@@ -1,5 +1,6 @@
 package com.uevitondev.springweb.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.uevitondev.springweb.domain.enums.TipoCliente;
 import jakarta.persistence.*;
@@ -31,6 +32,7 @@ public class Cliente implements Serializable {
     private Set<String> telefones = new HashSet<>();
 
 
+    @JsonBackReference
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 

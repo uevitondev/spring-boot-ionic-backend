@@ -1,5 +1,6 @@
 package com.uevitondev.springweb.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 
@@ -12,6 +13,7 @@ public class ItemPedido implements Serializable {
     @Serial
     private static final long serialVersionUID = 7551317853358949611L;
 
+    @JsonIgnore
     @EmbeddedId
     private ItemPedidoPK id = new ItemPedidoPK();
 
@@ -23,13 +25,14 @@ public class ItemPedido implements Serializable {
     }
 
     public ItemPedido(Pedido pedido, Produto produto, Double desconto, Integer quantidade, Double preco) {
-        this.id.setPedido(pedido);
-        this.id.setProduto(produto);
+        id.setPedido(pedido);
+        id.setProduto(produto);
         this.desconto = desconto;
         this.quantidade = quantidade;
         this.preco = preco;
     }
 
+    @JsonIgnore
     public Pedido getPedido() {
         return id.getPedido();
     }
