@@ -38,12 +38,17 @@ public class CategoriaResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> updateCategoria(@PathVariable Integer id,@RequestBody Categoria categoria) {
+    public ResponseEntity<Void> updateCategoria(@PathVariable Integer id, @RequestBody Categoria categoria) {
         categoria.setId(id);
         categoria = categoriaService.updateCategoria(categoria);
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleteCategoriaById(@PathVariable Integer id) {
+        categoriaService.deleteCategoriaById(id);
+        return ResponseEntity.noContent().build();
+    }
 
 
 }

@@ -1,9 +1,11 @@
 package com.uevitondev.springweb.services;
 
 import com.uevitondev.springweb.domain.Categoria;
+import com.uevitondev.springweb.exceptions.DataintegrityViolationException;
 import com.uevitondev.springweb.exceptions.ObjectNotFoundException;
 import com.uevitondev.springweb.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +35,16 @@ public class CategoriaService {
     public Categoria updateCategoria(Categoria categoria) {
         findCategoriaById(categoria.getId());
         return categoriaRepository.save(categoria);
+    }
+
+    public void deleteCategoriaById(Integer id) {
+        findCategoriaById(id);
+        try {
+            categoriaRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataintegrityViolationException("Não é possível excluir uma Categoria que possui produtos!");
+        }
+
     }
 
 
