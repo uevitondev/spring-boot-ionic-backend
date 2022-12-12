@@ -1,6 +1,7 @@
 package com.uevitondev.springweb.services;
 
 import com.uevitondev.springweb.domain.Categoria;
+import com.uevitondev.springweb.dto.CategoriaDTO;
 import com.uevitondev.springweb.exceptions.DataintegrityViolationException;
 import com.uevitondev.springweb.exceptions.ObjectNotFoundException;
 import com.uevitondev.springweb.repositories.CategoriaRepository;
@@ -56,6 +57,10 @@ public class CategoriaService {
     public Page<Categoria> findPage(Integer page, Integer linesPerPages, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPages, Sort.Direction.valueOf(direction), orderBy);
         return categoriaRepository.findAll(pageRequest);
+    }
+
+    public Categoria fromDto(CategoriaDTO categoriaDTO){
+        return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
     }
 
 
