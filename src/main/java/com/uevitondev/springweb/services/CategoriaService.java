@@ -6,6 +6,9 @@ import com.uevitondev.springweb.exceptions.ObjectNotFoundException;
 import com.uevitondev.springweb.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,10 +48,15 @@ public class CategoriaService {
             throw new DataintegrityViolationException("Não é possível excluir uma Categoria que possui produtos!");
         }
     }
+
     public List<Categoria> findAllCategorias() {
         return categoriaRepository.findAll();
     }
 
+    public Page<Categoria> findPage(Integer page, Integer linesPerPages, String orderBy, String direction) {
+        PageRequest pageRequest = PageRequest.of(page, linesPerPages, Sort.Direction.valueOf(direction), orderBy);
+        return categoriaRepository.findAll(pageRequest);
+    }
 
 
 }
