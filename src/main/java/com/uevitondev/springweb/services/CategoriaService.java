@@ -44,8 +44,11 @@ public class CategoriaService {
         } catch (DataIntegrityViolationException e) {
             throw new DataintegrityViolationException("Não é possível excluir uma Categoria que possui produtos!");
         }
-
     }
+    public List<Categoria> findAllCategorias() {
+        return categoriaRepository.findAll();
+    }
+
 
 
 }

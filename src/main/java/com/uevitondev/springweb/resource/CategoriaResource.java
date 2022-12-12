@@ -2,6 +2,7 @@ package com.uevitondev.springweb.resource;
 
 
 import com.uevitondev.springweb.domain.Categoria;
+import com.uevitondev.springweb.dto.CategoriaDTO;
 import com.uevitondev.springweb.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/categorias")
@@ -19,9 +21,10 @@ public class CategoriaResource {
     private CategoriaService categoriaService;
 
     @GetMapping
-    public ResponseEntity<List<Categoria>> findCategorias() {
-        List<Categoria> lista = categoriaService.findCategorias();
-        return ResponseEntity.ok().body(lista);
+    public ResponseEntity<List<CategoriaDTO>> findAllCategorias() {
+        List<Categoria> list = categoriaService.findAllCategorias();
+        List<CategoriaDTO> listDTO = list.stream().map(categoria -> new CategoriaDTO(categoria)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDTO);
     }
 
     @GetMapping(value = "/{id}")
