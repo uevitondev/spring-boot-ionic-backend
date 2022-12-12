@@ -15,12 +15,12 @@ public class PedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
-    public List<Pedido> listarPedidos() {
+    public List<Pedido> findPedidos() {
         return pedidoRepository.findAll();
     }
 
 
-    public Pedido buscarPedidoById(Integer id) {
+    public Pedido findPedidoById(Integer id) {
         Optional<Pedido> pedido = pedidoRepository.findById(id);
         return pedido.orElseThrow(() -> new ObjectNotFoundException("Categoria não encontrada! Id: " + id + ", Tipo: " + Pedido.class.getName()));
     }

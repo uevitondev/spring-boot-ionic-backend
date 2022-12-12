@@ -19,14 +19,14 @@ public class CategoriaResource {
     private CategoriaService categoriaService;
 
     @GetMapping
-    public ResponseEntity<List<Categoria>> listarCategorias() {
-        List<Categoria> lista = categoriaService.listarCategorias();
+    public ResponseEntity<List<Categoria>> findCategorias() {
+        List<Categoria> lista = categoriaService.findCategorias();
         return ResponseEntity.ok().body(lista);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Categoria> listarCategoriaById(@PathVariable Integer id) {
-        Categoria categoria = categoriaService.buscarCategoriaById(id);
+    public ResponseEntity<Categoria> findCategoriaById(@PathVariable Integer id) {
+        Categoria categoria = categoriaService.findCategoriaById(id);
         return ResponseEntity.ok().body(categoria);
     }
 
@@ -36,6 +36,14 @@ public class CategoriaResource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoria.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Void> updateCategoria(@PathVariable Integer id,@RequestBody Categoria categoria) {
+        categoria.setId(id);
+        categoria = categoriaService.updateCategoria(categoria);
+        return ResponseEntity.noContent().build();
+    }
+
 
 
 }
