@@ -21,11 +21,6 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    public List<Categoria> findCategorias() {
-        return categoriaRepository.findAll();
-    }
-
-
     public Categoria findCategoriaById(Integer id) {
         Optional<Categoria> categoria = categoriaRepository.findById(id);
         return categoria.orElseThrow(() -> new ObjectNotFoundException("Categoria não encontrada! Id: " + id + ", Tipo: " + Categoria.class.getName()));
@@ -59,7 +54,7 @@ public class CategoriaService {
         return categoriaRepository.findAll(pageRequest);
     }
 
-    public Categoria fromDto(CategoriaDTO categoriaDTO){
+    public Categoria fromDto(CategoriaDTO categoriaDTO) {
         return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
     }
 
