@@ -2,6 +2,7 @@ package com.uevitondev.springweb.resource;
 
 import com.uevitondev.springweb.domain.Cliente;
 import com.uevitondev.springweb.dto.ClienteDTO;
+import com.uevitondev.springweb.dto.ClienteNewDTO;
 import com.uevitondev.springweb.services.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,8 @@ public class ClienteResource {
 
 
     @PostMapping
-    public ResponseEntity<Void> insertCliente(@Valid @RequestBody ClienteDTO clienteDTO) {
-        Cliente cliente = clienteService.fromDto(clienteDTO);
+    public ResponseEntity<Void> insertCliente(@Valid @RequestBody ClienteNewDTO clienteNewDTO) {
+        Cliente cliente = clienteService.fromDto(clienteNewDTO);
         cliente = clienteService.insertCliente(cliente);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId()).toUri();
         return ResponseEntity.created(uri).build();
