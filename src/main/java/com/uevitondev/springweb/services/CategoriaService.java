@@ -1,6 +1,7 @@
 package com.uevitondev.springweb.services;
 
 import com.uevitondev.springweb.domain.Categoria;
+import com.uevitondev.springweb.domain.Cliente;
 import com.uevitondev.springweb.dto.CategoriaDTO;
 import com.uevitondev.springweb.exceptions.DataintegrityViolationException;
 import com.uevitondev.springweb.exceptions.ObjectNotFoundException;
@@ -32,8 +33,9 @@ public class CategoriaService {
     }
 
     public Categoria updateCategoria(Categoria categoria) {
-        findCategoriaById(categoria.getId());
-        return categoriaRepository.save(categoria);
+        Categoria newCategoria = findCategoriaById(categoria.getId());
+        updateData(newCategoria, categoria);
+        return categoriaRepository.save(newCategoria);
     }
 
     public void deleteCategoriaById(Integer id) {
@@ -56,6 +58,10 @@ public class CategoriaService {
 
     public Categoria fromDto(CategoriaDTO categoriaDTO) {
         return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
+    }
+
+    private void updateData(Categoria newCategoria, Categoria categoria) {
+        newCategoria.setNome(categoria.getNome());
     }
 
 
