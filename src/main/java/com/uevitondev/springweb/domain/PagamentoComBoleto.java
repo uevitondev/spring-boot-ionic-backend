@@ -1,6 +1,7 @@
 package com.uevitondev.springweb.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.uevitondev.springweb.domain.enums.EstadoPagamento;
 import jakarta.persistence.Entity;
 
@@ -9,6 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
+@JsonTypeName("pagamentoComBoleto")
 public class PagamentoComBoleto extends Pagamento implements Serializable {
     @Serial
     private static final long serialVersionUID = 7529511784925876778L;

@@ -12,13 +12,13 @@ import com.uevitondev.springweb.repositories.CidadeRepository;
 import com.uevitondev.springweb.repositories.ClienteRepository;
 import com.uevitondev.springweb.repositories.EnderecoRepository;
 import com.uevitondev.springweb.repositories.EstadoRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +38,7 @@ public class ClienteService {
         return cliente.orElseThrow(() -> new ObjectNotFoundException("Entidade não encontrada! Id: " + id + ", Tipo: " + Cliente.class.getName()));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Cliente insertCliente(Cliente cliente) {
         cliente.setId(null);
         cliente = clienteRepository.save(cliente);
