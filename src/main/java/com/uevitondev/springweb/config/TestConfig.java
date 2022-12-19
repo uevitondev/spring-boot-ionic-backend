@@ -1,6 +1,8 @@
 package com.uevitondev.springweb.config;
 
 import com.uevitondev.springweb.services.DBService;
+import com.uevitondev.springweb.services.EmailService;
+import com.uevitondev.springweb.services.MockEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,5 +21,10 @@ public class TestConfig {
     public boolean instatianteDatabase() throws ParseException {
         dbService.instatiateTestDatabase();
         return true;
+    }
+
+    @Bean
+    public EmailService emailService(){
+        return new MockEmailService();
     }
 }
