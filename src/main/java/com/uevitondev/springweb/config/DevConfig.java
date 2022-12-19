@@ -1,6 +1,8 @@
 package com.uevitondev.springweb.config;
 
 import com.uevitondev.springweb.services.DBService;
+import com.uevitondev.springweb.services.EmailService;
+import com.uevitondev.springweb.services.SmtpEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -27,5 +29,10 @@ public class DevConfig {
         }
         dbService.instatiateTestDatabase();
         return true;
+    }
+
+    @Bean
+    public EmailService emailService() {
+        return new SmtpEmailService();
     }
 }

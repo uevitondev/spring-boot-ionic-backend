@@ -51,7 +51,7 @@ public class PedidoService {
         return pedido.orElseThrow(() -> new ObjectNotFoundException("Categoria não encontrada! Id: " + id + ", Tipo: " + Pedido.class.getName()));
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Pedido insertPedido(Pedido pedido) {
         pedido.setId(null);
         pedido.setInstant(new Date());
