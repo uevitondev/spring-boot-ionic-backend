@@ -5,10 +5,9 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Entity
 public class Pedido implements Serializable {
@@ -117,5 +116,21 @@ public class Pedido implements Serializable {
         return Objects.hash(id);
     }
 
-
+    @Override
+    public String toString() {
+        NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        final StringBuilder sb = new StringBuilder("Pedido{");
+        sb.append("Pedido Numero: ").append(getId());
+        sb.append(", Instant: ").append(sdf.format(getInstant()));
+        sb.append(", Cliente: ").append(getCliente().getNome());
+        sb.append(", Situacao Pagamento: ").append(getPagamento().getEstadoPagamento().getDescricao());
+        sb.append("\nDetalhes:\n");
+        for (ItemPedido ip : itens) {
+            sb.append(ip.toString());
+        }
+        sb.append("Valor Total: ").append(nf.format(getValorTotal()));
+        sb.append('}');
+        return sb.toString();
+    }
 }
