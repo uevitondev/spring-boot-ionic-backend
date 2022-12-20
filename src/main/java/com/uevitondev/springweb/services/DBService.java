@@ -2,6 +2,7 @@ package com.uevitondev.springweb.services;
 
 import com.uevitondev.springweb.domain.*;
 import com.uevitondev.springweb.domain.enums.EstadoPagamento;
+import com.uevitondev.springweb.domain.enums.Perfil;
 import com.uevitondev.springweb.domain.enums.TipoCliente;
 import com.uevitondev.springweb.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,16 +90,24 @@ public class DBService {
         cidadeRepository.saveAll(Arrays.asList(cid1, cid2, cid3));
 
 
-        Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "04011125987", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("maria123"));
+        Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com",
+                "04011125987", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("maria123"));
         cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+
+        Cliente cli2 = new Cliente(null, "Ana Costa", "ana@gmail.com",
+                "94298111008", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("ana123"));
+        cli2.addPerfil(Perfil.ADMIM);
+        cli2.getTelefones().addAll(Arrays.asList("998747455", "998632544"));
 
         Endereco end1 = new Endereco(null, "Rua das flores", "300", "Apto 203", "Jardim", "38220834", cli1, cid1);
         Endereco end2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, cid2);
+        Endereco end3 = new Endereco(null, "Avenida Floriano", "2106", null, "Centro", "07285999", cli2, cid2);
 
         cli1.getEnderecos().addAll(Arrays.asList(end1, end2));
+        cli2.getEnderecos().addAll(Arrays.asList(end3));
 
-        clienteRepository.saveAll(Arrays.asList(cli1));
-        enderecoRepository.saveAll(Arrays.asList(end1, end2));
+        clienteRepository.saveAll(Arrays.asList(cli1,cli2));
+        enderecoRepository.saveAll(Arrays.asList(end1, end2, end3));
 
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
