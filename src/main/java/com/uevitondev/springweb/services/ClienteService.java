@@ -8,7 +8,6 @@ import com.uevitondev.springweb.dto.ClienteDTO;
 import com.uevitondev.springweb.dto.ClienteNewDTO;
 import com.uevitondev.springweb.exceptions.DataintegrityViolationException;
 import com.uevitondev.springweb.exceptions.ObjectNotFoundException;
-import com.uevitondev.springweb.repositories.CidadeRepository;
 import com.uevitondev.springweb.repositories.ClienteRepository;
 import com.uevitondev.springweb.repositories.EnderecoRepository;
 import com.uevitondev.springweb.repositories.EstadoRepository;
@@ -17,6 +16,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +31,8 @@ public class ClienteService {
     private EnderecoRepository enderecoRepository;
     @Autowired
     private EstadoRepository estadoRepository;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     public Cliente findClienteById(Integer id) {
@@ -71,11 +73,13 @@ public class ClienteService {
     }
 
     public Cliente fromDto(ClienteDTO clienteDTO) {
-        return new Cliente(clienteDTO.getId(), clienteDTO.getNome(), clienteDTO.getEmail(), null, null);
+        return new Cliente(clienteDTO.getId(), clienteDTO.getNome(), clienteDTO.getEmail(), null, null, null);
     }
 
     public Cliente fromDto(ClienteNewDTO clienteNewDTO) {
-        Cliente cliente = new Cliente(null, clienteNewDTO.getNome(), clienteNewDTO.getEmail(), clienteNewDTO.getCpfOuCnpj(), TipoCliente.toEnum(clienteNewDTO.getTipoCliente()));
+        Cliente cliente = new Cliente(null, clienteNewDTO.getNome(), clienteNewDTO.getEmail(),
+                clienteNewDTO.getCpfOuCnpj(), TipoCliente.toEnum(clienteNewDTO.getTipoCliente()),
+                bCryptPasswordEncoder.encode(clienteNewDTO.getSenha()));
         Cidade cidade = new Cidade(clienteNewDTO.getCidadeId(), null, null);
         Endereco endereco = new Endereco(null, clienteNewDTO.getLogradouro(), clienteNewDTO.getNumero(), clienteNewDTO.getComplemento(), clienteNewDTO.getBairro(), clienteNewDTO.getCep(), cliente, cidade);
         cliente.getEnderecos().add(endereco);
