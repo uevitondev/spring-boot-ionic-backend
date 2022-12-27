@@ -10,7 +10,6 @@ import com.uevitondev.springweb.repositories.PagamentoRepository;
 import com.uevitondev.springweb.repositories.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -51,7 +50,6 @@ public class PedidoService {
         return pedido.orElseThrow(() -> new ObjectNotFoundException("Categoria não encontrada! Id: " + id + ", Tipo: " + Pedido.class.getName()));
     }
 
-    @Transactional
     public Pedido insertPedido(Pedido pedido) {
         pedido.setId(null);
         pedido.setInstant(new Date());
