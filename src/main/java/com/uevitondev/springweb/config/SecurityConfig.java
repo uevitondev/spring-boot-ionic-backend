@@ -1,6 +1,7 @@
 package com.uevitondev.springweb.config;
 
 import com.uevitondev.springweb.security.JWTAuthenticationFilter;
+import com.uevitondev.springweb.security.JWTAuthorizationFilter;
 import com.uevitondev.springweb.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -57,6 +58,7 @@ public class SecurityConfig {
                 .authenticated();
         http.authenticationProvider(authenticationProvider());
         http.addFilter(new JWTAuthenticationFilter(authenticationManager, jwtUtil));
+        http.addFilter(new JWTAuthorizationFilter(authenticationManager, jwtUtil, userDetailsService));
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
     }
@@ -70,10 +72,12 @@ public class SecurityConfig {
         return authProvider;
     }
 
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
+
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
