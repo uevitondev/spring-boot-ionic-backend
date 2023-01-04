@@ -1,12 +1,11 @@
 package com.uevitondev.springweb.resource;
 
-import com.uevitondev.springweb.domain.Categoria;
 import com.uevitondev.springweb.domain.Pedido;
-import com.uevitondev.springweb.dto.CategoriaDTO;
 import com.uevitondev.springweb.services.PedidoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -20,6 +19,7 @@ public class PedidoResource {
     @Autowired
     private PedidoService pedidoService;
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<Pedido>> findPedidos() {
         List<Pedido> lista = pedidoService.findPedidos();
@@ -35,8 +35,6 @@ public class PedidoResource {
     @PostMapping
     public ResponseEntity<Void> insertPedido(@Valid @RequestBody Pedido pedido) {
         pedido = pedidoService.insertPedido(pedido);
-
-
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(pedido.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
