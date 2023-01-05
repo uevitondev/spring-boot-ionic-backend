@@ -1,5 +1,6 @@
 package com.uevitondev.springweb.services;
 
+import com.uevitondev.springweb.domain.Cliente;
 import com.uevitondev.springweb.domain.Pedido;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.SimpleMailMessage;
@@ -13,5 +14,7 @@ public interface EmailService {
     void sendOrderConfirmationHtmlEmail(Pedido pedido);
 
     void sendHtmlEmail(MimeMessage msg);
+
+    void sendNewPasswordEmail(Cliente cliente, String newPassword);
 
 }

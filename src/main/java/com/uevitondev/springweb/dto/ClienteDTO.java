@@ -18,7 +18,7 @@ public class ClienteDTO implements Serializable {
     private String nome;
 
     @NotEmpty(message = "Preenchimento Obrigatório!")
-    @Email
+    @Email(message = "Email inválido!")
     private String email;
 
 

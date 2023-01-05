@@ -1,5 +1,6 @@
 package com.uevitondev.springweb.services;
 
+import com.uevitondev.springweb.domain.Cliente;
 import com.uevitondev.springweb.domain.Pedido;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -67,6 +68,22 @@ public abstract class AbstractEmailService implements EmailService {
         mimeMessageHelper.setText(htmlFromTemplatePedido(pedido), true);
 
         return mimeMessage;
+    }
+
+    @Override
+    public void sendNewPasswordEmail(Cliente cliente, String newPassword) {
+        SimpleMailMessage simpleMailMessage = prepareNewPasswordEmail(cliente, newPassword);
+        sendEmail(simpleMailMessage);
+    }
+
+    protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPassword) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(cliente.getEmail());
+        mailMessage.setFrom(sender);
+        mailMessage.setSubject("Solicitação de Nova Senha!");
+        mailMessage.setSentDate(new Date(System.currentTimeMillis()));
+        mailMessage.setText("Nova Senha: " + newPassword);
+        return mailMessage;
     }
 
 }
