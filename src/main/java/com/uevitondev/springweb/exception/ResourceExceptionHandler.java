@@ -1,5 +1,6 @@
 package com.uevitondev.springweb.exception;
 
+import com.uevitondev.springweb.exceptions.AuthorizationException;
 import com.uevitondev.springweb.exceptions.DataintegrityViolationException;
 import com.uevitondev.springweb.exceptions.ObjectNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,6 +39,14 @@ public class ResourceExceptionHandler {
             err.addError(x.getField(), x.getDefaultMessage());
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<StandardError> authorizationException(ObjectNotFoundException e, HttpServletRequest request) {
+
+        StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+
     }
 
 }
