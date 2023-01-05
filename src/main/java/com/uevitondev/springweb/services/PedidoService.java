@@ -1,18 +1,23 @@
 package com.uevitondev.springweb.services;
 
+import com.uevitondev.springweb.domain.Cliente;
 import com.uevitondev.springweb.domain.ItemPedido;
 import com.uevitondev.springweb.domain.PagamentoComBoleto;
 import com.uevitondev.springweb.domain.Pedido;
 import com.uevitondev.springweb.domain.enums.EstadoPagamento;
+import com.uevitondev.springweb.exceptions.AuthorizationException;
 import com.uevitondev.springweb.exceptions.ObjectNotFoundException;
 import com.uevitondev.springweb.repositories.ItemPedidoRepository;
 import com.uevitondev.springweb.repositories.PagamentoRepository;
 import com.uevitondev.springweb.repositories.PedidoRepository;
+import com.uevitondev.springweb.security.UserSS;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,12 +43,6 @@ public class PedidoService {
 
     @Autowired
     private EmailService emailService;
-
-
-    public List<Pedido> findPedidos() {
-        return pedidoRepository.findAll();
-    }
-
 
     public Pedido findPedidoById(Integer id) {
         Optional<Pedido> pedido = pedidoRepository.findById(id);
@@ -76,6 +75,17 @@ public class PedidoService {
         emailService.sendOrderConfirmationHtmlEmail(pedido);
 
         return pedido;
+    }
+
+    public Page<Pedido> findPage(Integer page, Integer linesPerPages, String orderBy, String direction) {
+        UserSS userSS = UserService.authenticated();
+        if (userSS == null) {
+            throw new AuthorizationException("Acesso negado!");
+        }
+        PageRequest pageRequest = PageRequest.of(page, linesPerPages, Sort.Direction.valueOf(direction), orderBy);
+        Cliente cliente = clienteService.findClienteById(userSS.getId());
+
+        return pedidoRepository.findByCliente(cliente, pageRequest);
     }
 
 
