@@ -80,12 +80,22 @@ public class ClienteService {
         try {
             clienteRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new DataintegrityViolationException("Não é possível excluir, porque há 'Pedidos' relaci   onadas!");
+            throw new DataintegrityViolationException("Não é possível excluir, porque há 'Pedidos' relacionados!");
         }
     }
 
     public List<Cliente> findAllClientes() {
         return clienteRepository.findAll();
+    }
+
+    public Cliente findByEmail(String email) {
+        UserSS userSS = UserService.authenticated();
+        if (userSS == null || !userSS.hasRole(Perfil.ADMIN) && !email.equals(userSS.getUsername())) {
+            throw new AuthorizationException("Acesso Negado!");
+        }
+
+        Optional<Cliente> cliente = clienteRepository.findById(userSS.getId());
+        return cliente.orElseThrow(() -> new ObjectNotFoundException("Entidade não encontrada! Id: " + userSS.getId() + ", Tipo: " + Cliente.class.getName()));
     }
 
     public Page<Cliente> findPage(Integer page, Integer linesPerPages, String orderBy, String direction) {
@@ -98,9 +108,7 @@ public class ClienteService {
     }
 
     public Cliente fromDto(ClienteNewDTO clienteNewDTO) {
-        Cliente cliente = new Cliente(null, clienteNewDTO.getNome(), clienteNewDTO.getEmail(),
-                clienteNewDTO.getCpfOuCnpj(), TipoCliente.toEnum(clienteNewDTO.getTipoCliente()),
-                bCryptPasswordEncoder.encode(clienteNewDTO.getSenha()));
+        Cliente cliente = new Cliente(null, clienteNewDTO.getNome(), clienteNewDTO.getEmail(), clienteNewDTO.getCpfOuCnpj(), TipoCliente.toEnum(clienteNewDTO.getTipoCliente()), bCryptPasswordEncoder.encode(clienteNewDTO.getSenha()));
         Cidade cidade = new Cidade(clienteNewDTO.getCidadeId(), null, null);
         Endereco endereco = new Endereco(null, clienteNewDTO.getLogradouro(), clienteNewDTO.getNumero(), clienteNewDTO.getComplemento(), clienteNewDTO.getBairro(), clienteNewDTO.getCep(), cliente, cidade);
         cliente.getEnderecos().add(endereco);
