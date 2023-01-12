@@ -43,7 +43,7 @@ public class SecurityConfig {
 
     private static final String[] PUBLIC_MATCHERS = {"/h2-console/**"};
 
-    private static final String[] PUBLIC_MATCHERS_GET = {"/h2-console/**", "/produtos/**", "/categorias/**"};
+    private static final String[] PUBLIC_MATCHERS_GET = {"/h2-console/**", "/produtos/**", "/categorias/**", "/estados/**"};
     private static final String[] PUBLIC_MATCHERS_POST = {"/clientes", "/auth/forgot/**"};
 
 
