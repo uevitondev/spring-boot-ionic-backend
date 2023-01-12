@@ -15,6 +15,7 @@ import com.uevitondev.springweb.repositories.EnderecoRepository;
 import com.uevitondev.springweb.repositories.EstadoRepository;
 import com.uevitondev.springweb.security.UserSS;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +42,11 @@ public class ClienteService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private S3Services s3Services;
+    @Autowired
+    private ImageService imageService;
+
+    @Value("${img.prefix.client.profile}")
+    private String prefixClientProfile;
 
 
     public Cliente findClienteById(Integer id) {
@@ -116,14 +123,11 @@ public class ClienteService {
         if (userSS == null) {
             throw new AuthorizationException("Acesso Negado!");
         }
-        URI uri = s3Services.uploadFile(multipartFile);
 
-        Optional<Cliente> clienteOptional = clienteRepository.findById(userSS.getId());
-        Cliente cliente = clienteOptional.get();
-        cliente.setImageUrl(uri.toString());
-        clienteRepository.save(cliente);
+        BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        String filename = prefixClientProfile + userSS.getId() + ".jpg";
 
-        return uri;
+        return s3Services.uploadFile(imageService.getInputStream(jpgImage, "jpg"), filename, "image");
     }
 
 
