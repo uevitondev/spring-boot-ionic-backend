@@ -16,6 +16,17 @@ Projeto Java Spring Web, colocando em prática estudos do ecossistema Java Sprin
 - Armazenamento de imagens com Amazon S3
 - Criação de aplicação multiplataforma com Ionic 3
 
+# Tecnologias utilizadas
+## Back end
+- Java
+- Spring Boot
+- JPA / Hibernate
+- Maven
+- Amazon S3
+- MySQL
+- OAuth
+- Spring Security
+
 
 # Como executar o projeto
 
